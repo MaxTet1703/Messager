@@ -1,0 +1,286 @@
+body{
+    background: #F0EDE5;
+    position: relative;
+}
+#MainHeader{
+    padding: 0;
+}
+.btn-about a{
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+#NavBar{
+    display: flex;
+    justify-content: center;
+    justify-content: end;
+    padding-right: 150px;
+}
+.main-title-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.main-title{
+    text-align: center;
+    color: #C9BB95;
+    font-weight: 600;
+    padding: 20px;
+}
+#NavBar button{
+    margin: 20px 100px;
+    height: 60px;
+    padding: 10px;
+    width: 200px;
+    border: none;
+    background: none;
+    font-size: 20px;
+    font-weight: 600;
+    color: #C9BB95;
+    border-radius: 15px;
+    transition: all .4s;
+}
+#NavBar button:hover{
+    background: #C9BB95;
+    color: white;
+}
+#NavBar button.active{
+    background: #C9BB95;
+    color: white;
+}
+.login-wrapper{
+    height: 90vh;
+    overflow: hidden;
+}
+.about-info, .forms{
+    width: 500px;
+    height: 500px;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+}
+.about-info{
+    padding: 10px;
+    border-radius: 15px;
+    background: #C9BB95;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.g-log{
+    color: #C9BB95;
+    font-weight: 600;
+}
+.greeting{
+    font-size: 30px;
+    color: white;
+    margin-bottom: 20px;
+}
+.g-descr{
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}
+.btn-about{
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 15px;
+    transition: all .4s;
+    background: none;
+    border: 2px solid white;
+    overflow: hidden;
+    position: relative;
+    color: white;
+
+}
+.btn-about:before{
+    height: 0px;
+    width; 0px;
+    background: rgba(255, 255, 255, 0.4);
+    transform: rotate(-45deg);
+    position: absolute;
+    content: "";
+    left: -100%;
+    top: 0;
+    transition: all .5s;
+}
+.btn-about:hover:before{
+    height: 300px;
+    width: 300px;
+}
+
+#login, #sign-up{
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    top: 0;
+    transition: all .5s;
+}
+#sign-up{
+    right: 100%;
+}
+#login{
+    left: -100%
+}
+#login .m-error{
+    font-size: 15px;
+    padding: 5px;
+    color: red;
+}
+#login div,
+#sign-up div{
+    width: 100%;
+}
+#login .error,
+#sign-up .error,
+#login .ok,
+#sign-up .ok{
+    font-size: 20px;
+    margin-left: 10px;
+}
+#login .error,
+#sign-up .error{
+    color: red;
+}
+#login .ok,
+#sign-up .ok{
+    color: green;
+}
+#sign-up .m-ok{
+    color: green;
+}
+#login.active{
+    left: 0%
+}
+#sign-up.active{
+    right: 0;
+}
+
+#sign-up div{
+    position: relative;
+}
+#sign-up .error-message{
+    color: red;
+    font-size: 10px;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 7px;
+    left: 15%;
+}
+#login input{
+    margin: 15px 0;
+    padding: 15px 10px;
+    border-radius: 15px;
+    border: 1px solid #C9BB95;
+    width: 350px;
+
+}
+
+#login .sub,
+#sign-up .sub{
+    color: white;
+    padding: 10px 15px;
+    border-radius: 15px;
+    width: 100px;
+    background: #C9BB95;
+    border: 2px solid #C9BB95;
+    position: relative;
+    color: white
+    overflow: hidden;
+    transition: all .4s;
+}
+/*#login .sub:before{
+    height: 0px;
+    width; 0px;
+    background: rgba(255, 255, 255, 0.4);
+    position: absolute;
+    content: "";
+    left: -5px;
+    top: -5px;
+    transition: all .5s;
+}
+#login .sub:hover:before{
+    height: 300px;
+    width: 300px;
+} */
+#login .sub:hover,
+#sign-up .sub:hover{
+    color: #C9BB95;
+    background: none;
+    border-color: #C9BB95;
+}
+#sign-up input{
+    margin: 5px 0;
+    padding: 15px 10px;
+    border-radius: 15px;
+    border: 1px solid #C9BB95;
+    width: 350px;
+}
+#sign-up input::placeholder{
+    font-size: 15px;
+}
+#sign-up .sub{
+    width: 300px;
+    padding 10px;
+
+}
+.g-reg-title{
+    color: #C9BB95;
+    font-size: 30px;
+}
+.about-container{
+    height: 85vh;
+}
+.about-content{
+    width: 600px;
+    height: 600px;
+    border-radius: 15px;
+    padding: 15px;
+    position: relative;
+    background: #C9BB95;
+}
+.about-content h2{
+    font-size: 30px;
+    color: white;
+}
+.about-content p{
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}
+.comeback{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 20px;
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    text-align: center;
+    transition: all .6s;
+}
+.comeback:after{
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 0;
+    height: 0;
+    width: 0;
+
+    background: rgba(255, 255, 255, 0.4);
+    transition: all .6s;
+}
+.comeback:hover{
+    transform: rotate(360deg);
+}
+.comeback:hover:after{
+    height: 200%;
+    width: 200%;
+}

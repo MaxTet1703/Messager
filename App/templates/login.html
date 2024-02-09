@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block menu %}
+    <button>Войти</button>
+    <button>Регистрация</button>
+{% endblock %}
+{% block content %}
+<div class="container-fluid login-wrapper">
+    <div class="row" style="height: 100%;">
+        <div class="col-6 d-flex justify-content-end align-items-center">
+             <div class="about-info">
+                <h2 class="greeting">Добро пожаловать</h2>
+                <p class="g-descr">
+                    “Пообщаемся?” - отличная возможность обрести людей для общения и хорошего времяпрепровождения
+                </p>
+                <a class="btn-about" href="{% url 'about' %}" >О нас</a>
+             </div>
+        </div>
+        <div class="col-6 d-flex align-items-center">
+             <div class="forms">
+
+                <form id="login" class="d-flex flex-column justify-content-center align-items-center" method="POST" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <h2 class="g-log">Вход</h2>
+                    <p class="m-error opacity-0">Неверные данные</p>
+                    {%for f in form_login%}
+                        <div class="d-flex justify-content-center align-items-center input-wrapper">
+                            {{f}}
+                            <i class="fa fa-exclamation-circle error d-none" aria-hidden="true"></i>
+                        </div>
+                    {%endfor%}
+                    <button class="sub" type="submit">Войти</button>
+                </form>
+
+
+
+                <form id="sign-up" class="d-flex flex-column justify-content-center align-items-center" method="post" action="{% url 'login' %}">
+                     {% csrf_token %}
+                     <h2 class="g-reg-title">Создать пользователя</h2>
+                     <p class="m-ok opacity-0">Вы успешно зарегистрировались</p>
+                     {%for f in form_sign_up%}
+                       <div class="d-flex justify-content-center align-items-center">
+                           {{f}}
+                           <span class="error-message d-none"></span>
+                           <i class="fa fa-exclamation-circle error d-none" aria-hidden="true"></i>
+                           <i class="fa fa-check-circle-o ok d-none" aria-hidden="true"></i>
+                       </div>
+                    {%endfor%}
+                    <button class="sub" type="submit">Создать пользователя</button>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+</div>
+<script src="{% static 'js/login.js' %}"></script>
+{% endblock %}

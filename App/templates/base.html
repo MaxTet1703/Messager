@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <title>{{title}}</title>
+</head>
+    <header id="MainHeader" class="container-fluid">
+        <div class="row">
+            <div class="main-title-wrapper col-4">
+                <h2 class="main-title">Пообщаемся?</h2>
+            </div>
+
+            <nav id="NavBar" class="col-8">
+                {% block menu%}
+
+                {% endblock %}
+
+            </nav>
+        </div>
+    </header>
+<body>
+{% block content %}
+{% endblock %}
+</body>
+</html>

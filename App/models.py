@@ -1,4 +1,5 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
 from phonenumber_field.modelfields import PhoneNumberField
 from django.db import models
@@ -16,7 +17,7 @@ class UserManager(BaseUserManager):
     def create_user(self, number, password, **extra_fileds):
         if not number:
             raise ValidationError("Номер не должен быть пустым")
-        user = self.model(number, **extra_fileds)
+        user = self.model(number=number, **extra_fileds)
         user.set_password(password)
         user.save()
         return user
@@ -36,7 +37,7 @@ class UserManager(BaseUserManager):
         return self.create_user(number, password, **extra_fields)
 
 
-class Users(AbstractBaseUser):
+class Users(AbstractBaseUser, PermissionsMixin):
     """
 
     Переопределённая модель пользовтаеля
@@ -44,8 +45,8 @@ class Users(AbstractBaseUser):
     """
     number = PhoneNumberField(unique=True, null=False, blank=False, verbose_name="Номер телефона",
                               help_text="Введите номер телефона", region="RU")
-    first_name = models.CharField(max_length=25, verbose_name="Имя пользователя", null=True)
-    last_name = models.CharField(max_length=25, verbose_name="Фамилия пользователя", null=True)
+    first_name = models.CharField(max_length=25, verbose_name="Имя пользователя", null=False)
+    last_name = models.CharField(max_length=25, verbose_name="Фамилия пользователя", null=False)
     profile_image = models.ImageField(upload_to=f"user?profile", null=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -73,11 +74,21 @@ class Places(models.Model):
 
 
 class Chats(models.Model):
+    """
+
+    Модель чата
+
+    """
     participants = models.ManyToManyField(Users, related_name='chats')
     created = models.DateTimeField(auto_now_add=True)
 
 
 class Message(models.Model):
+    """
+
+    Модель сообщений
+
+    """
     user = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name="Отправитель")
     chat = models.ForeignKey(Chats, on_delete=models.CASCADE, related_name='messages', verbose_name="Чат")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")

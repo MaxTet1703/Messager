@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content%}
+<div class="about-container d-flex justify-content-center align-items-center">
+    <div class="about-content d-flex flex-column justify-content-center align-items-center">
+        <h2>
+            О нас
+        </h2>
+        <p>
+            Inovation technology - мировой гигат в сфере IT продуктов, создающихся им на протяжении 15 лет. “Пообщаемся?” - новый продукт гиганта, пользующийся популярностью в 60 странах мира и имеет охват 180 миллионов человек! Присоединяся к большому комьюнити “Пообщаемся?” и наслаждайся временем, проведенным здесь
+        </p>
+        <a class="comeback" href="{% url 'login' %}">&#10229;</a>
+    </div>
+</div>
+{% endblock %}
