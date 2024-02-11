@@ -44,7 +44,7 @@ class UserCreate(UserCreationForm):
         }
 
     def clean_number(self):
-        number = self.cleaned_data.get("number")
+        number = self.data["number"]
         if Users.objects.filter(number=number).exists():
             raise ValidationError("Аккаунт с такми номером уже существует")
         if str(number)[0] != "+":
@@ -54,27 +54,31 @@ class UserCreate(UserCreationForm):
         return number
 
     def clean_first_name(self):
-        first_name = self.cleaned_data.get("first_name")
+        first_name = self.data["first_name"]
         if not first_name.isalpha():
             raise ValidationError("Имя должно содержать только буквы")
+        if not first_name:
+            raise ValidationError("Заполните это поле")
         return first_name
 
     def clean_last_name(self):
-        last_name = self.cleaned_data.get("last_name")
+        last_name = self.data["last_name"]
         if not last_name.isalpha():
             raise ValidationError("Фамилия должна содержать только буквы")
+        if not last_name:
+            raise ValidationError("Заполните это поле")
         return last_name
 
     def clean_password1(self):
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 != password2:
+        password1 = self.data["password1"]
+        password2 = self.data["password2"]
+        if str(password1).strip() != str(password2).strip():
             raise ValidationError("Пароли не совпадают")
         return password1
 
     def clean_password2(self):
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 != password2:
+        password1 = self.data["password1"]
+        password2 = self.data["password2"]
+        if str(password1).strip() != str(password2).strip():
             raise ValidationError("Пароли не совпадают")
         return password2

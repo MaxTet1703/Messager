@@ -21,15 +21,15 @@ class Login(View):
             if user:
                 login(self.request, user)
                 return JsonResponse({"type_form": "login", "status": 200}, status=200)
-
-        return JsonResponse({"type_form": "login", "status": 400}, status=200)
+        return JsonResponse({"type_form": "login", "status": 400}, status=400)
 
     def sign_up(self):
         form = UserCreate(self.request.POST)
+
         if form.is_valid():
             form.save()
             return JsonResponse({"type_form": "sign-up", "status": 200}, status=200)
-        return JsonResponse({"type_form": "sign-up", "errors": form.errors.get_json_data(),  "status": 400}, status=200)
+        return JsonResponse(data={"type_form": "sign-up", "errors": form.errors.get_json_data(),  "status": 400}, status=400)
 
     methods = {
         "login": login,
