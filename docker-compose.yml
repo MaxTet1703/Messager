@@ -5,6 +5,8 @@ services:
     image: postgres:9.5
     restart: always
     container_name: pgdb
+    expose:
+      - 5432
     ports:
       - "5432:5432"
     environment:
@@ -14,28 +16,46 @@ services:
     volumes:
       - pgdb_di:/var/lib/postgresql/data9
 
-  npm:
+  nginx:
     build:
       context: .
-      target: npm
+      target: nginx
+    container_name: nginx
     volumes:
-      - .:/app/
+      - ./config-nginx.d:/etc/nginx/conf.d
+      - staticfiles:/var/www/html/static
+      - mediafiles:/var/www/html/media
+    depends_on:
+      - django
+    ports:
+      - "80:80"
 
   django:
     build:
       context: .
       target: django
     container_name: django
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn --bind 0.0.0.0:8000 Messager.wsgi
     ports:
       - "8000:8000"
     volumes:
       - .:/app/
+      - staticfiles:/app/static
+      - mediafiles:/app/media
+      - node_modules:/app/node
     depends_on:
       - pgdb
 
-
+  npm:
+    build:
+      context: .
+      target: npm
+    volumes:
+      - node_modules:/app/
 
 
 volumes:
-  pgdb_di:
+  pgdb_di: null
+  staticfiles:
+  mediafiles:
+  node_modules:

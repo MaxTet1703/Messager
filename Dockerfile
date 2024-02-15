@@ -10,7 +10,12 @@ ENV PYTHONUNBUFFERED 1
 
 FROM node:20.7 as npm
 WORKDIR /app/
+COPY package-lock.json /app/
+COPY package.json /app/
 
-
+FROM nginx:1.24 as nginx
+RUN rm etc/nginx/conf.d/default.conf
+RUN touch var/log/nginx.error_log
+COPY ./config-nginx.d/nginx.conf etc/nginx/conf.d
 
 
