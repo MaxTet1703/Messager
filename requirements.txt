@@ -6,4 +6,4 @@ phonenumbers==8.13.29
 pillow==10.2.0
 sqlparse==0.4.4
 psycopg2==2.9.9
-gunicorn
+gunicorn==20.0.4

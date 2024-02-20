@@ -14,8 +14,7 @@ COPY package-lock.json /app/
 COPY package.json /app/
 
 FROM nginx:1.24 as nginx
-RUN rm etc/nginx/conf.d/default.conf
-RUN touch var/log/nginx.error_log
-COPY ./config-nginx.d/nginx.conf etc/nginx/conf.d
+COPY ./config-nginx.d/default.conf /etc/nginx/conf.d/default.conf
+WORKDIR /var/www/html/
 
 
