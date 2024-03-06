@@ -1,11 +1,12 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
-from django.db.models import F, Value as V
 from phonenumber_field.modelfields import PhoneNumberField
-from django.db.models.functions import Upper, Concat
-from django.contrib.postgres.indexes import GinIndex, OpClass
+from django.contrib.postgres.indexes import GinIndex
 from django.db import models
+
+from Messager.settings import BASE_DIR
+
 
 
 
@@ -50,7 +51,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
                               help_text="Введите номер телефона", region="RU")
     first_name = models.CharField(max_length=50, verbose_name="Имя пользователя", null=False)
     last_name = models.CharField(max_length=50, verbose_name="Фамилия пользователя", null=False)
-    profile_image = models.ImageField(upload_to="media", null=True)
+    profile_image = models.ImageField(upload_to="media", null=True, default=f'{BASE_DIR}/static/images/default.jpg')
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

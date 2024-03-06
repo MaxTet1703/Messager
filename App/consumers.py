@@ -1,9 +1,13 @@
+import json
+
+from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
-from django.db.models import Value, Q
+from django.db.models import Q
 from channels.db import database_sync_to_async
-from django.db.models.functions import Concat
+from rest_framework.renderers import JSONRenderer
 
 from .models import Users
+from .serializers import UsersSerializer
 
 
 class SearchConsumer(AsyncJsonWebsocketConsumer):
@@ -12,17 +16,23 @@ class SearchConsumer(AsyncJsonWebsocketConsumer):
         await self.accept()
 
     async def websocket_receive(self, message):
-        full_name = message["text"].split()
-        users = await self.get_users(full_name)
-        await self.send_json(users)
+        users = await self.get_users(message["text"])
+
+        await self.send(json.dumps(users, ensure_ascii=False))
 
     async def websocket_disconnect(self, message):
         await self.close()
 
     @database_sync_to_async
     def get_users(self, full_name):
-        if len(full_name) == 2:
-            return Users.objects.filter(
-                Q(first_name__trigram_similar=full_name[0]) & Q(last_name__trigram_similar=full_name[1]))
-        else:
-            return Users.objects.filter(Q(first_name__trigram_similar=full_name[0]))
+        users = Users.objects.filter(
+            Q(first_name__trigram_similar=full_name) | Q(last_name__trigram_similar=full_name))
+        users_data = [
+            {
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'photo_image': user.profile_image.url
+            }
+            for user in users
+        ]
+        return users_data
