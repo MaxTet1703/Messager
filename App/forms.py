@@ -1,19 +1,17 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from phonenumber_field.formfields import PhoneNumberField as PNF
+
 from .models import *
 
 
-class UserLogin(forms.ModelForm):
+class UserLogin(forms.Form):
+    number = PNF(region="RU", widget=forms.TextInput(
+        attrs={'class': 'number', 'placeholder': 'Ваш номер телефона', 'id': 'number_log'}))
+
     password = forms.CharField(max_length=30, widget=forms.PasswordInput(attrs={
         'class': 'password',
         'placeholder': 'Введите пароль'}))
-
-    class Meta:
-        model = Users
-        fields = ("number",)
-        widgets = {
-            "number": forms.NumberInput(attrs={'class': 'number', 'placeholder': 'Ваш номер телефона'})
-        }
 
 
 class UserCreate(UserCreationForm):

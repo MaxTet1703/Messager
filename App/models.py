@@ -1,13 +1,16 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
+from django.db.models import F, Value as V
 from phonenumber_field.modelfields import PhoneNumberField
+from django.db.models.functions import Upper, Concat
+from django.contrib.postgres.indexes import GinIndex, OpClass
 from django.db import models
+
 
 
 # Create your models here.
 class UserManager(BaseUserManager):
-
     """
 
     Переопределенный класс Manager для моедля пользовтеля
@@ -45,12 +48,16 @@ class Users(AbstractBaseUser, PermissionsMixin):
     """
     number = PhoneNumberField(unique=True, null=False, blank=False, verbose_name="Номер телефона",
                               help_text="Введите номер телефона", region="RU")
-    first_name = models.CharField(max_length=25, verbose_name="Имя пользователя", null=False)
-    last_name = models.CharField(max_length=25, verbose_name="Фамилия пользователя", null=False)
-    profile_image = models.ImageField(upload_to=f"user?profile", null=True)
+    first_name = models.CharField(max_length=50, verbose_name="Имя пользователя", null=False)
+    last_name = models.CharField(max_length=50, verbose_name="Фамилия пользователя", null=False)
+    profile_image = models.ImageField(upload_to="media", null=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        indexes = [GinIndex(fields=["first_name", 'last_name'],  opclasses=('gin_trgm_ops', 'gin_trgm_ops'),
+                            name='full_name_trig_index')]
 
     USERNAME_FIELD = "number"
     REQUIRED_FIELDS = ["first_name", "last_name"]
@@ -58,6 +65,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
 
 
 class Places(models.Model):

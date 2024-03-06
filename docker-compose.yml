@@ -16,6 +16,15 @@ services:
     volumes:
       - pgdb_di:/var/lib/postgresql/data9
 
+  redis:
+    image: redis
+    restart: always
+    container_name: redis
+    expose:
+      -  6379
+    ports:
+      - "6379:6379"
+
   nginx:
     build:
       context: .
@@ -37,7 +46,7 @@ services:
       context: .
       target: django
     container_name: django
-    command: gunicorn Messager.wsgi:application --bind 0.0.0.0:8000
+    command: daphne -p 8000 -b 0.0.0.0 Messager.asgi:application
     ports:
       - "8000:8000"
     volumes:

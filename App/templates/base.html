@@ -17,9 +17,28 @@
             </div>
 
             <nav id="NavBar" class="col-8">
-                {% block menu%}
-
-                {% endblock %}
+                {% if user.is_authenticated %}
+                    {% if user.profile_image %}
+                        <img class="user-image" src="{{user.profile_image.url}}">
+                    {% else %}
+                        <img class="user-image" src="{% static 'images/default.jpg' %}">
+                    {% endif %}
+                    <p class="username">{{user}}</p>
+                    <ul class="user-menu">
+                        <li class="cap">Меню</li>
+                        <ul class="menu">
+                            <li class="item"><a href="{% url 'main' %}">Поиск</a></li>
+                            <li class="item"><a>Сообщения</a></li>
+                            <li class="item"><a>Профиль</a></li>
+                            <li class="item"><a>Вопросы</a></li>
+                            <li class="item"><a href="{% url 'logout' %}">Выйти</a></li>
+                        </ul>
+                    </ul>
+                {% elif view.template_name != 'about_us.html' %}
+                    {{view.template_name}}
+                    <button>Войти</button>
+                    <button>Регистрация</button>
+                {% endif %}
 
             </nav>
         </div>
@@ -27,5 +46,8 @@
 <body>
 {% block content %}
 {% endblock %}
+{% if user.is_authenticated %}
+    <script src="{% static 'js/main.js' %}"></script>
+{% endif %}
 </body>
 </html>

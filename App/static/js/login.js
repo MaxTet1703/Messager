@@ -15,17 +15,20 @@ $(function($){
         });
     });
 
+
     function success_for_login(response){
-        console.log("ok")
+        window.location = 'main/';
     }
+     function success_for_sign_up(response){
+        $("#sign-up .m-ok").removeClass("opacity-0");
+        $("#sign-up i.ok").removeClass("d-none");
+    }
+
+
     function fail_for_login(response){
          $("#login .m-error").removeClass("opacity-0");
          $("#login .input-wrapper i.error").removeClass("d-none");
-    }
 
-    function success_for_sign_up(response){
-        $("#sign-up .m-ok").removeClass("opacity-0");
-        $("#sign-up i.ok").removeClass("d-none");
     }
     function fail_for_sign_up(response){
         Array.from($("#sign-up div")).forEach(block =>{
@@ -40,9 +43,12 @@ $(function($){
         $("#sign-up div").find("span").removeClass("d-none");
     }
 
+
     forms.forEach((form, index) => {
 
         $(form).submit(function(e){
+            const id_form = $(form).attr('id');
+            const csrfmiddlewaretoken = $(`${id_form} input[name="csrfmiddlewaretoken"]`);
 
             const data = $(this).serialize() + `&message=${messages[index]}`;
             $(this).find("span").text("").addClass("d-none");

@@ -27,7 +27,12 @@ body{
     font-weight: 600;
     padding: 20px;
 }
-#NavBar button{
+#NavBar button a{
+    display: block;
+    color: #C9BB95;
+    text-decoration: none;
+}
+#NavBar button, #NavBar .user-menu{
     margin: 20px 100px;
     height: 60px;
     padding: 10px;
@@ -37,11 +42,94 @@ body{
     font-size: 20px;
     font-weight: 600;
     color: #C9BB95;
-    border-radius: 15px;
+    border-radius: 10px;
+    transition: all .4s;
+    position: relative;
+
+}
+#NavBar .username{
+    align-self: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: #C9BB95;
+    margin-top: 10px;
+}
+#NavBar img.user-image{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    align-self: center;
+    margin: 0 20px 15px 20px;
+}
+#NavBar button:hover, #NavBar .user-menu{
+    background: #C9BB95;
+    color: white;
+}
+.user-menu:after{
+    position: absolute;
+    top: 25%;
+    right: 20px;
+    content: '\2039';
+    color: white;
+    transform: rotate(90deg);
     transition: all .4s;
 }
-#NavBar button:hover{
+#NavBar .user-menu{
+    z-index: 100;
+}
+.user-menu.active:after{
+    transform: rotate(-90deg);
+}
+
+.user-menu li.cap{
+    display: block;
+    position: absolute;
+    top: 25%;
+    left: 30%;
+}
+.user-menu ul{
+    position: absolute;
+    top: 105%;
+    left: 10px;
+    width: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    list-style-type: none;
+    transition: all .4s;
+    z-index: 0;
+    transform: scale(0);
     background: #C9BB95;
+}
+.user-menu.active ul{
+    transform: scale(1);
+}
+.user-menu ul li.item{
+    margin: 5px 0;
+    position: relative;
+}
+.user-menu ul li.item a{
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    padding-bottom: 5px;
+    display: block;
+    cursor: pointer;
+    position: relative;
+}
+.user-menu ul li.item:after{
+    content: ' ';
+    background: white;
+    position: absolute;
+    bottom: 0px;
+    left: 1px;
+    height: 2px;
+    width: 0px;
+    transition: all .4s;
+}
+.user-menu ul li.item:hover:after, .user-menu ul li.item.active:after{
+    width: 100%;
+}
+#NavBar button a:hover{
     color: white;
 }
 #NavBar button.active{
@@ -283,4 +371,44 @@ body{
 .comeback:hover:after{
     height: 200%;
     width: 200%;
+}
+.search-form-container{
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.search-form-container .wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    width: 500px;
+    height: 500px;
+    padding: 10px;
+
+}
+#search{
+    position: relative;
+}
+#search .line{
+    width: 450px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid #C9BB95;
+    color: #C9BB95;
+    font-weight: 700;
+    font-size: 20px;
+}
+#search .line::placeholder{
+    color: #C9BB95;
+}
+#search .line:focus{
+    outline: none;
+}
+#search i{
+    color: #C9BB95;
+    font-size: 20px;
+    position: absolute;
+    right: 5px;
 }
