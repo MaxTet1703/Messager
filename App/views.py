@@ -1,10 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from django.views import View
 
 from .forms import *
+from .models import *
 
 
 # Create your views here.
@@ -55,8 +55,14 @@ class HomePage(View):
     template_name = 'homepage.html'
 
     def get(self, request):
-        print(f"Что за хрень {reverse('main')}")
         return render(self.request, self.template_name)
+
+    def post(self, request):
+        friend = Users.objects.get(pk=request.POST.get('pk'))
+        new_chat = Chats.objects.create()
+        new_chat.participants.add(friend, self.request.user)
+        new_chat.save()
+        return JsonResponse({'status': 'ok'}, status=200)
 
 
 def about_us(request):

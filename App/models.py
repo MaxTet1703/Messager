@@ -8,8 +8,6 @@ from django.db import models
 from Messager.settings import BASE_DIR
 
 
-
-
 # Create your models here.
 class UserManager(BaseUserManager):
     """
@@ -51,13 +49,13 @@ class Users(AbstractBaseUser, PermissionsMixin):
                               help_text="Введите номер телефона", region="RU")
     first_name = models.CharField(max_length=50, verbose_name="Имя пользователя", null=False)
     last_name = models.CharField(max_length=50, verbose_name="Фамилия пользователя", null=False)
-    profile_image = models.ImageField(upload_to="media", null=True, default=f'{BASE_DIR}/static/images/default.jpg')
+    profile_image = models.ImageField(upload_to="media", null=True, default='default.jpg')
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
     class Meta:
-        indexes = [GinIndex(fields=["first_name", 'last_name'],  opclasses=('gin_trgm_ops', 'gin_trgm_ops'),
+        indexes = [GinIndex(fields=["first_name", 'last_name'], opclasses=('gin_trgm_ops', 'gin_trgm_ops'),
                             name='full_name_trig_index')]
 
     USERNAME_FIELD = "number"
@@ -66,7 +64,6 @@ class Users(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
-
 
 
 class Places(models.Model):

@@ -458,6 +458,27 @@ body{
     display: flex;
     align-items: center;
 }
+.user{
+    position: relative;
+}
+.user .status{
+    position: absolute;
+    transform: translateY(-50%)ж
+    top: 50%;
+    right: 60px;
+    color: #C9BB95;
+}
+.user .add-friend{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 25px;
+    font-size: 25px;
+    color: #C9BB95;
+}
+.user .add-friend:hover{
+    color: #A49A6D;
+}
 .user .profile{
     width: 70px;
     height: 70px;
@@ -468,4 +489,18 @@ body{
     margin-left: 30px;
     color: #C9BB95;
     font-weight: 600;
+}
+.user-list .no-user{
+    text-align: center;
+    margin: 40px 0;
+    font-size: 20px;
+    color: #C9BB95;
+}
+.user .yourself{
+    position: absolute;
+    top: 50%;
+    right: 25px;
+    transform: translateY(-50%);
+    color: #C9BB95;
+
 }

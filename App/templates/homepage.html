@@ -8,16 +8,14 @@
                 <i class="fa fa-search"></i>
             </form>
             <div id="user-list-container">
+                {% csrf_token %}
                 <div class="loader-wrapper d-none">
                     <div class="loader">
 
                     </div>
                 </div>
                 <div class="user-list">
-<!--                    <div class="user">-->
-<!--                        <img class="profile" src="{% static 'images/default.jpg' %}">-->
-<!--                        <span class="full-name">Игорь Петров</span>-->
-<!--                    </div>-->
+                    <p class="no-user d-none">Ничего не найдено</p>
                 </div>
 
             </div>

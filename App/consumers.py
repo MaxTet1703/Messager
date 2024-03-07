@@ -6,7 +6,7 @@ from django.db.models import Q
 from channels.db import database_sync_to_async
 from rest_framework.renderers import JSONRenderer
 
-from .models import Users
+from .models import Users, Chats
 from .serializers import UsersSerializer
 
 
@@ -29,9 +29,12 @@ class SearchConsumer(AsyncJsonWebsocketConsumer):
             Q(first_name__trigram_similar=full_name) | Q(last_name__trigram_similar=full_name))
         users_data = [
             {
+                'id': user.pk,
                 'first_name': user.first_name,
                 'last_name': user.last_name,
-                'photo_image': user.profile_image.url
+                'photo_image': user.profile_image.url,
+                'is_yourself': True if user == self.scope['user'] else False,
+                'is_friend': True if user.chats.all().intersection(self.scope['user'].chats.all()).exists() else False
             }
             for user in users
         ]
