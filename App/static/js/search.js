@@ -1,26 +1,27 @@
 $(function($){
-    var data = null;
+
     const path_to_page = 'ws://127.0.0.1:8000/ws/main';
+    var search_ws = new WebSocket(path_to_page);
+    search_ws.onmessage = create_user_list;
+
     $("#search input.line").keydown(function(event){
         $('.user-list').addClass('d-none');
         $('.loader-wrapper').removeClass("d-none");
         $('.user-list .user').remove();
 
-        var message = $("#search input.line").val();;
-        var wb = new WebSocket(path_to_page);
-        wb.message = message;
-        wb.onopen = send_message;
-        wb.onmessage = get_users;
-        if (data.length != 0){
-            create_user_list();
-            add_friend();
-        }else{
-            $('.user-list p').removeClass('d-none');
-        }
+        const message = $("#search input.line").val();
+        search_ws.send(message);
+
         $('.user-list').removeClass('d-none');
         $('.loader-wrapper').addClass("d-none");
     });
-    function create_user_list(){
+    function create_user_list(event){
+        var data = JSON.parse(event.data);
+         if (!data.length){
+            $('.loader-wrapper').addClass("d-none");
+            $('.user-list p').removeClass('d-none');
+            return;
+        }
         Array.from(data).forEach(user => {
             let status = null;
             if (user.is_yourself){
@@ -40,13 +41,8 @@ $(function($){
                 </div>
             `);
         });
+        add_friend();
         $('.user-list p').addClass('d-none');
-    }
-    function send_message(){
-        this.send(this.message);
-    }
-    function get_users(event){
-        data = JSON.parse(event.data);
     }
     function add_friend(){
         Array.from($('.fa-user-plus')).forEach(button => {

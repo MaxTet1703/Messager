@@ -1,6 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.query import Prefetch
 from django.views import View
 
 from .forms import *
@@ -51,7 +53,7 @@ class Login(View):
         return self.methods[self.request.POST.get("message")](self, request)
 
 
-class HomePage(View):
+class HomePage(LoginRequiredMixin, View):
     template_name = 'homepage.html'
 
     def get(self, request):
@@ -63,6 +65,23 @@ class HomePage(View):
         new_chat.participants.add(friend, self.request.user)
         new_chat.save()
         return JsonResponse({'status': 'ok'}, status=200)
+
+
+class ChatsView(LoginRequiredMixin, View):
+    template_name = "chats.html"
+
+    def get(self, request):
+        chats = Chats.objects.filter(participants__pk__in=(self.request.user.pk,)). \
+            prefetch_related(Prefetch("participants",
+                                      queryset=Users.objects.exclude(pk=self.request.user.pk).only("first_name",
+                                                                                                   "last_name",
+                                                                                                   "profile_image")))
+
+        return render(request, self.template_name, {"query": chats})
+
+
+def message(request):
+    return HttpResponse(request)
 
 
 def about_us(request):

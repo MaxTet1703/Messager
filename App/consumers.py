@@ -17,7 +17,6 @@ class SearchConsumer(AsyncJsonWebsocketConsumer):
 
     async def websocket_receive(self, message):
         users = await self.get_users(message["text"])
-
         await self.send(json.dumps(users, ensure_ascii=False))
 
     async def websocket_disconnect(self, message):

@@ -156,3 +156,15 @@ MEDIA_URL = "/media/"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "App.Users"
+# LOGGING = {
+#     "version": 1,
+#     "handlers": {
+#         'console': {"class": "logging.StreamHandler" }
+#     },
+#     "loggers": {
+#         "django.db.backends": {
+#             "handlers": ['console'],
+#             "level": "DEBUG"
+#         }
+#     }
+# }

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="chats-wrapp d-flex justify-content-center align-items-center">
+    <div class="chats-list">
+        {% for c in query %}
+            <a class="link-to-mes" href="{{c.get_absolute_url}}">
+                <img class="companion-image" src="{{c.participants.all.0.profile_image.url}}">
+                <p class="full-name">{{c.participants.all.0}}</p>
+            </a>
+
+        {%endfor%}
+    </div>
+</div>
+{% endblock %}

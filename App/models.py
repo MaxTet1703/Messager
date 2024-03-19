@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
+from django.urls import reverse_lazy
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.postgres.indexes import GinIndex
 from django.db import models
@@ -87,6 +88,9 @@ class Chats(models.Model):
     """
     participants = models.ManyToManyField(Users, related_name='chats')
     created = models.DateTimeField(auto_now_add=True)
+
+    def get_absolute_url(self):
+        return reverse_lazy('messages', kwargs={"id": self.pk})
 
 
 class Message(models.Model):

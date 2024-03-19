@@ -502,5 +502,34 @@ body{
     right: 25px;
     transform: translateY(-50%);
     color: #C9BB95;
-
+}
+.chats-wrapp{
+    height: 80vh;
+    overflow: hidden !important;
+}
+.chats-list{
+    width: 650px;
+    height: 70%;
+    background: white;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+.link-to-mes{
+    text-decoration: none;
+    color: black;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+img.companion-image{
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+}
+p.full-name{
+    margin-left: 50px;
+    font-size: 20px;
+}
+.link-to-mes:hover{
+    background: rgba(0, 0,0,.1);
 }
