@@ -90,7 +90,7 @@ class Chats(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def get_absolute_url(self):
-        return reverse_lazy('messages', kwargs={"id": self.pk})
+        return reverse_lazy('dialog', kwargs={"id": self.pk})
 
 
 class Message(models.Model):
@@ -99,7 +99,7 @@ class Message(models.Model):
     Модель сообщений
 
     """
-    user = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name="Отправитель")
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, verbose_name="Отправитель", related_name="user")
     chat = models.ForeignKey(Chats, on_delete=models.CASCADE, related_name='messages', verbose_name="Чат")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     text = models.TextField(max_length=500, verbose_name="Текст сообщения")

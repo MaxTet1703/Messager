@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+{%block content%}
+<div class="box">
+    <div class="dialog-container d-flex flex-column">
+        <div class="companion-data d-flex justify-content-center align-items-center">
+            <a class="back" href="{% url 'chats' %}">&larr;</a>
+            <img src="{{dialog.participants.all.0.profile_image.url}}">
+            <p>{{dialog.participants.all.0}}</p>
+        </div>
+        <div class="messages d-flex flex-column">
+        </div>
+        <form id="mes-sending" class="align-self-end">
+            <input type="text" class="typing" placeholder="Введите сообщение">
+            <i class="fa fa-paper-plane send" aria-hidden="true"></i>
+        </form>
+    </div>
+</div>
+{% endblock %}

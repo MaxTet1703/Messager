@@ -1,3 +1,7 @@
+*{
+    padding: 0;
+    margin: 0;
+}
 body{
     background: #F0EDE5;
     position: relative;
@@ -532,4 +536,132 @@ p.full-name{
 }
 .link-to-mes:hover{
     background: rgba(0, 0,0,.1);
+}
+.box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+}
+.dialog-container{
+    background: white;
+    width: 600px;
+    height: 90%;
+    border-radius: 15px;
+    position: relative;
+}
+.companion-data{
+    padding: 5px;
+    border-bottom: 1px solid rgba(0,0,0,.2);
+    position: relative;
+}
+.companion-data img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+.companion-data p{
+    margin-left: 10px;
+    font-size: 20px;
+}
+.back{
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    text-decoration: none;
+    color: black;
+    font-size: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: center;
+}
+.back:before{
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    transform: translate(50% 50%);
+    content: "";
+    height: 0%;
+    width:0%;
+    background: grey;
+    opacity: .2;
+    border-radius: 50%;
+    transition: .4s;
+}
+.back:hover:before{
+    width:100%;
+    height: 100%;
+}
+.messages{
+    max-height: 85%;
+    overflow-y: auto;
+}
+.mes-wrapp{
+    padding: 15px 30px;
+    margin: 10px 0;
+    height: auto;
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+}
+.my-mes, .com-mes{
+    flex-basis: auto;
+    width: max-content;
+    max-width: 300px;
+    height: auto;
+    word-wrap: break-word;
+    color: white;
+    background: #C9BB95;
+    padding: 10px;
+    line-height: 1.5em;
+    border-radius: 15px 15px 0 15px;
+}
+.my-mes{
+    align-self: end;
+    border-radius: 15px 15px 0 15px;
+}
+.com-mes{
+    border-radius: 15px 15px 15px 0px;
+}
+#mes-sending{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 15px;
+}
+#mes-sending input{
+    width: 100%;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border:none;
+    border-bottom: 1px solid rgba(0,0,0,.4);
+}
+#mes-sending input:focus{
+    outline: none;
+}
+.send{
+    position: absolute;
+    cursor: pointer;
+    right: 25px;
+    top: 15px;
+    color: #C9BB95;
+    font-size: 25px;
+    overflow: hidden;
+}
+.send:after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, .3);
+    transition: .3s;
+}
+.send:hover:after{
+    width: 100%;
+    height: 100%;
 }

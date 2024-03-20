@@ -3,10 +3,12 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import Prefetch
+from django.views.generic.detail import DetailView
 from django.views import View
 
 from .forms import *
 from .models import *
+from .mixins import CompanionMixin, MessagesMixin
 
 
 # Create your views here.
@@ -43,10 +45,11 @@ class Login(View):
     def get(self, request):
         if self.request.user.is_authenticated:
             return redirect('main')
-        context = dict()
-        context["form_login"] = UserLogin()
-        context["form_sign_up"] = UserCreate()
-        context["title"] = "Вход в систему"
+        context = {
+            "form_login": UserLogin(),
+            "form_sign_up": UserCreate(),
+            "title": "Вход в систему"
+        }
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -61,27 +64,32 @@ class HomePage(LoginRequiredMixin, View):
 
     def post(self, request):
         friend = Users.objects.get(pk=request.POST.get('pk'))
-        new_chat = Chats.objects.create()
-        new_chat.participants.add(friend, self.request.user)
+        new_chat = Chats.objects.create().participants(friend, self.request.user)
         new_chat.save()
         return JsonResponse({'status': 'ok'}, status=200)
 
 
-class ChatsView(LoginRequiredMixin, View):
+class ChatsView(CompanionMixin, LoginRequiredMixin, View):
     template_name = "chats.html"
 
     def get(self, request):
         chats = Chats.objects.filter(participants__pk__in=(self.request.user.pk,)). \
             prefetch_related(Prefetch("participants",
-                                      queryset=Users.objects.exclude(pk=self.request.user.pk).only("first_name",
-                                                                                                   "last_name",
-                                                                                                   "profile_image")))
+                                      queryset=self.get_companion))
 
         return render(request, self.template_name, {"query": chats})
 
 
-def message(request):
-    return HttpResponse(request)
+class DialogView(MessagesMixin, CompanionMixin, LoginRequiredMixin, DetailView):
+    model = Chats
+    template_name = "dialog.html"
+    context_object_name = "dialog"
+    pk_url_kwarg = "id"
+
+    def get_object(self, queryset=None):
+        return Chats.objects.prefetch_related(Prefetch("participants", queryset=self.get_companion),
+                                              Prefetch("messages", queryset=self.get_messages)).get(
+            pk=self.kwargs['id'])
 
 
 def about_us(request):
