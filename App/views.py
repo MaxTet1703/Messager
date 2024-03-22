@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import Prefetch
 from django.views.generic.detail import DetailView
+from django.contrib.auth import get_user
 from django.views import View
 
 from .forms import *
@@ -76,7 +77,7 @@ class ChatsView(CompanionMixin, LoginRequiredMixin, View):
         chats = Chats.objects.filter(participants__pk__in=(self.request.user.pk,)). \
             prefetch_related(Prefetch("participants",
                                       queryset=self.get_companion))
-
+        print(self.args)
         return render(request, self.template_name, {"query": chats})
 
 
@@ -90,6 +91,12 @@ class DialogView(MessagesMixin, CompanionMixin, LoginRequiredMixin, DetailView):
         return Chats.objects.prefetch_related(Prefetch("participants", queryset=self.get_companion),
                                               Prefetch("messages", queryset=self.get_messages)).get(
             pk=self.kwargs['id'])
+
+
+def getting_user(request):
+    user = get_user(request)
+    print(user.id)
+    return JsonResponse({"id": user.id})
 
 
 def about_us(request):

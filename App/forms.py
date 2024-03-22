@@ -46,7 +46,7 @@ class UserCreate(UserCreationForm):
         if Users.objects.filter(number=number).exists():
             raise ValidationError("Аккаунт с такми номером уже существует")
         if str(number)[0] != "+":
-            ValidationError("Нет '+' перед набором номера ")
+            raise ValidationError("Нет '+' перед набором номера ")
         if not str(number)[1::].isdigit():
             raise ValidationError("Неверный формат данных")
         return number

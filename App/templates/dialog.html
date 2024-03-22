@@ -9,6 +9,17 @@
             <p>{{dialog.participants.all.0}}</p>
         </div>
         <div class="messages d-flex flex-column">
+            {% for m in dialog.messages.all %}
+                <div class="mes-wrapp">
+                    {% if m.user != request.user%}
+                    <p class="com-mes">
+                    {% else %}
+                    <p class="my-mes">
+                    {% endif %}
+                    {{m.text}}
+                    </p>
+                </div>
+            {% endfor %}
         </div>
         <form id="mes-sending" class="align-self-end">
             <input type="text" class="typing" placeholder="Введите сообщение">
@@ -16,4 +27,5 @@
         </form>
     </div>
 </div>
+<script src="{% static 'js/dialog.js' %}"></script>
 {% endblock %}

@@ -6,3 +6,4 @@ from .models import *
 admin.site.register(Users)
 
 admin.site.register(Chats)
+admin.site.register(Message)

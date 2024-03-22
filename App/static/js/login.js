@@ -1,7 +1,6 @@
 $(function($){
 
     const messages = ["login", "sign-up"];
-
     const buttons = Array.from($("#NavBar button"));
     const forms = Array.from($(".forms form"));
     $(forms[0]).addClass("active");
@@ -42,7 +41,7 @@ $(function($){
         });
         $("#sign-up div").find("span").removeClass("d-none");
     }
-
+    
 
     forms.forEach((form, index) => {
 

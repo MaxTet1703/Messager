@@ -8,5 +8,6 @@ urlpatterns = [
     path("main/", HomePage.as_view(), name='main'),
     path("chats/", ChatsView.as_view(), name="chats"),
     path("chats/<int:id>/", DialogView.as_view(), name="dialog"),
-    path('logout/', logout_user, name="logout")
+    path('logout/', logout_user, name="logout"),
+    path('get_user/', getting_user)
 ]
