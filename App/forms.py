@@ -80,3 +80,23 @@ class UserCreate(UserCreationForm):
         if str(password1).strip() != str(password2).strip():
             raise ValidationError("Пароли не совпадают")
         return password2
+
+
+class PlacesFrom(forms.ModelForm):
+
+    class Meta:
+        for_coords = forms.NumberInput(attrs = {'type': 'hidden'})
+        model = Places
+        fields = ("name", "comment", "longitude", "latitude")
+        widgets = {
+            "name": forms.TextInput(attrs = {
+                'class': 'pname',
+                'placeholder': 'Название места'
+            }),
+            'comment': forms.Textarea(attrs = {
+                'class': 'pcomm',
+                'placeholder': 'Расскажите о месте'
+            }),
+            'longitude': for_coords,
+            'latitude': for_coords
+        }

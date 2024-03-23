@@ -1,5 +1,7 @@
 $(function($){
-        
+    
+    $(".messages").scrollTop($(".messages").height());
+
     const chatSocket = new WebSocket("ws://127.0.0.1:8000/ws" + window.location.pathname);
     
     chatSocket.onmessage = function(event){
@@ -22,7 +24,7 @@ $(function($){
                     <p class="${class_for_message}">${message_info.message}</p>
                 </div>
             `);
-            $(".messages .mes-wrapp").last().removeClass(animation_class);
+            $(".messages").scrollTop($(".messages").height());
         })
         .catch(error => console.error('Error:', error));
     }

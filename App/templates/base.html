@@ -30,8 +30,7 @@
                             <li class="item"><a href="{% url 'logout' %}">Выйти</a></li>
                         </ul>
                     </ul>
-                {% elif view.template_name != 'about_us.html' %}
-                    {{view.template_name}}
+                {% elif not is_about %}
                     <button>Войти</button>
                     <button>Регистрация</button>
                 {% endif %}

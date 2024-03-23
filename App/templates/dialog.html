@@ -6,7 +6,7 @@
         <div class="companion-data d-flex justify-content-center align-items-center">
             <a class="back" href="{% url 'chats' %}">&larr;</a>
             <img src="{{dialog.participants.all.0.profile_image.url}}">
-            <p>{{dialog.participants.all.0}}</p>
+            <p>{{dialog.participants.all.0}} {{__module__}}</p>
         </div>
         <div class="messages d-flex flex-column">
             {% for m in dialog.messages.all %}

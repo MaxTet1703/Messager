@@ -4,12 +4,18 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import Prefetch
 from django.views.generic.detail import DetailView
+from django.views.generic import FormView
+from django.views.generic.list import ListView
+from rest_framework.renderers import JSONRenderer
 from django.contrib.auth import get_user
 from django.views import View
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from .forms import *
 from .models import *
 from .mixins import CompanionMixin, MessagesMixin
+from .serializers import PlacesSerializer
 
 
 # Create your views here.
@@ -93,6 +99,41 @@ class DialogView(MessagesMixin, CompanionMixin, LoginRequiredMixin, DetailView):
             pk=self.kwargs['id'])
 
 
+
+class NewslineView(FormView, ListView):
+    template_name = 'newsline.html'
+    form_class = PlacesFrom
+    model = Places
+    context_object_name = "reviews"
+
+    def get_queryset(self):
+        return Places.objects.filter(
+            user_id=self.request.user).select_related("user_id").only("pk", "name",
+                                                                     "comment", "user_id",
+                                                                    "user_id__profile_image")
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["use_map"] = True
+        return context
+
+    def form_valid(self, form: PlacesFrom):
+        new_entry = form.save()
+        new_entry.user_id = self.request.user
+        new_entry.save()
+        return JsonResponse(form.cleaned_data, status=200)
+
+    def form_invalid(self, form: PlacesFrom):
+        return JsonResponse({
+            "mes": "Заполните данные полностью"
+            }, status=400)
+
+@api_view(["GET"])
+def get_reviews(request):
+    queryset = Places.objects.all().only("pk", "longitude", 'latitude')
+    serializer = PlacesSerializer(queryset, many=True)
+    return Response(serializer.data)
+
 def getting_user(request):
     user = get_user(request)
     print(user.id)
@@ -100,9 +141,12 @@ def getting_user(request):
 
 
 def about_us(request):
-    return render(request, "about_us.html")
+    return render(request, "about_us.html", {"is_about": True})
 
 
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+
+
