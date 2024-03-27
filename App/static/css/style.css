@@ -14,6 +14,9 @@ body{
     color: white;
     display: block;
 }
+a.vk-btn{
+    margin: 10px 0;
+}
 #NavBar{
     display: flex;
     justify-content: center;

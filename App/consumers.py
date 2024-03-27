@@ -1,5 +1,4 @@
 """ Module for serialize """
-
 import json
 
 from channels.generic.websocket import AsyncJsonWebsocketConsumer, AsyncWebsocketConsumer
@@ -7,6 +6,7 @@ from django.db.models import Q
 from channels.db import database_sync_to_async
 
 from .models import Users, Message, Chats
+from Messager.settings import MEDIA_ROOT
 
 
 class SearchConsumer(AsyncJsonWebsocketConsumer):
@@ -31,7 +31,7 @@ class SearchConsumer(AsyncJsonWebsocketConsumer):
                 'id': user.pk,
                 'first_name': user.first_name,
                 'last_name': user.last_name,
-                'photo_image': user.profile_image.url,
+                'photo_image': user.profile_image.url if user.profile_image else MEDIA_ROOT / "default.jpg",
                 'is_yourself': True if user == self.scope['user'] else False,
                 'is_friend': True if user.chats.all().intersection(self.scope['user'].chats.all()).exists() else False
             }

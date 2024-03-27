@@ -17,7 +17,7 @@ class UserManager(BaseUserManager):
 
     """
 
-    def create_user(self, number, password, **extra_fileds):
+    def create_user(self, number, password=None, **extra_fileds):
         if not number:
             raise ValidationError("Номер не должен быть пустым")
         user = self.model(number=number, **extra_fileds)
@@ -25,7 +25,7 @@ class UserManager(BaseUserManager):
         user.save()
         return user
 
-    def create_superuser(self, number, password, **extra_fields):
+    def create_superuser(self, number, password=None, **extra_fields):
         """
         Create and save a SuperUser with the given email and password.
         """
@@ -46,11 +46,12 @@ class Users(AbstractBaseUser, PermissionsMixin):
     Переопределённая модель пользовтаеля
 
     """
+    email = models.EmailField(null=True)
     number = PhoneNumberField(unique=True, null=False, blank=False, verbose_name="Номер телефона",
                               help_text="Введите номер телефона", region="RU")
     first_name = models.CharField(max_length=50, verbose_name="Имя пользователя", null=False)
     last_name = models.CharField(max_length=50, verbose_name="Фамилия пользователя", null=False)
-    profile_image = models.ImageField(upload_to="media", null=True, default='default.jpg')
+    profile_image = models.ImageField(upload_to="media", null=True, default="media/default_image/default.jpg")
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

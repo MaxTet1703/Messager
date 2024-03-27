@@ -22,7 +22,8 @@ from .settings import MEDIA_URL, MEDIA_ROOT, DEBUG, STATIC_URL, STATIC_ROOT
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include("App.urls"))
+    path("", include("App.urls")),
+    path('', include('social_django.urls', namespace='social')),
 ]
 
 if DEBUG:

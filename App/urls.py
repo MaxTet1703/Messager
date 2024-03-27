@@ -1,11 +1,11 @@
-from django.urls import path
+from django.urls import path, include
 from rest_framework import routers
 
 from .views import *
 
 
-router = routers.SimpleRouter()
-router.register('map_info', get_reviews)
+router = routers.DefaultRouter()
+router.register('map_info/', get_reviews, basename="MapInfo")
 
 urlpatterns = [
     path("", Login.as_view(), name="login"),
@@ -16,6 +16,6 @@ urlpatterns = [
     path('news/', NewslineView.as_view(), name="newline"),
     path('logout/', logout_user, name="logout"),
     path('get_user/', getting_user),
+    path("api/", include("rest_framework.urls"))
 ]
 
-urlpatterns += router.urls

@@ -1,12 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import Prefetch
 from django.views.generic.detail import DetailView
 from django.views.generic import FormView
 from django.views.generic.list import ListView
 from rest_framework.renderers import JSONRenderer
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user
 from django.views import View
 from rest_framework.decorators import api_view
@@ -14,7 +14,7 @@ from rest_framework.response import Response
 
 from .forms import *
 from .models import *
-from .mixins import CompanionMixin, MessagesMixin
+from .mixins import CompanionMixin, MessagesMixin, GetDataFromVKAPIMixin
 from .serializers import PlacesSerializer
 
 
@@ -30,8 +30,10 @@ class Login(View):
             number = form.cleaned_data.get("number")
             password = form.cleaned_data.get("password")
             user = authenticate(request, username=number, password=password)
+            print(type(user))
             if user:
                 login(self.request, user)
+                print(type(user))
                 return JsonResponse({"type_form": "login", "status": 200}, status=200)
         return JsonResponse({"type_form": "login", "status": 400}, status=400)
 
@@ -83,8 +85,10 @@ class ChatsView(CompanionMixin, LoginRequiredMixin, View):
         chats = Chats.objects.filter(participants__pk__in=(self.request.user.pk,)). \
             prefetch_related(Prefetch("participants",
                                       queryset=self.get_companion))
-        print(self.args)
-        return render(request, self.template_name, {"query": chats})
+        context = {
+            "query": chats
+        }
+        return render(request, self.template_name, context)
 
 
 class DialogView(MessagesMixin, CompanionMixin, LoginRequiredMixin, DetailView):
@@ -96,9 +100,7 @@ class DialogView(MessagesMixin, CompanionMixin, LoginRequiredMixin, DetailView):
     def get_object(self, queryset=None):
         return Chats.objects.prefetch_related(Prefetch("participants", queryset=self.get_companion),
                                               Prefetch("messages", queryset=self.get_messages)).get(
-            pk=self.kwargs['id'])
-
-
+                                                        pk=self.kwargs['id'])
 
 class NewslineView(FormView, ListView):
     template_name = 'newsline.html'
@@ -129,7 +131,7 @@ class NewslineView(FormView, ListView):
             }, status=400)
 
 @api_view(["GET"])
-def get_reviews(request):
+def get_reviews(request, format=None):
     queryset = Places.objects.all().only("pk", "longitude", 'latitude')
     serializer = PlacesSerializer(queryset, many=True)
     return Response(serializer.data)

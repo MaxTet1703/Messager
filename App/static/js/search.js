@@ -1,6 +1,6 @@
 $(function($){
 
-    const path_to_page = 'ws://127.0.0.1:8000/ws/main';
+    const path_to_page = 'ws://' + window.location.host + '/ws/main';
     var search_ws = new WebSocket(path_to_page);
     search_ws.onmessage = create_user_list;
 

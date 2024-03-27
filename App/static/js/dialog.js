@@ -2,13 +2,13 @@ $(function($){
     
     $(".messages").scrollTop($(".messages").height());
 
-    const chatSocket = new WebSocket("ws://127.0.0.1:8000/ws" + window.location.pathname);
+    const chatSocket = new WebSocket("ws://" + window.location.host + "/ws" + window.location.pathname);
     
     chatSocket.onmessage = function(event){
         var class_for_message = "";
         var animation_class = "";
         message_info = JSON.parse(event.data)
-        fetch("http://127.0.0.1:8000/get_user/")
+        fetch("http://" + window.location.host + "/get_user/")
         .then(response => response.json())
         .then(data => {
 
