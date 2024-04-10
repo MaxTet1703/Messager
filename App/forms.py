@@ -87,7 +87,7 @@ class PlacesFrom(forms.ModelForm):
     class Meta:
         for_coords = forms.NumberInput(attrs = {'type': 'hidden'})
         model = Places
-        fields = ("name", "comment", "longitude", "latitude")
+        fields = ("name", "comment", "latitude", "longitude")
         widgets = {
             "name": forms.TextInput(attrs = {
                 'class': 'pname',

@@ -1,2 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block content %}
+<div class="newsline-container">
+
+    <div class="form-container d-flex">
+        <form method="POST" action="{% url 'newsline' %}" id="make-mem" class="d-flex flex-column align-items-center">
+            {% csrf_token %}
+            {% for f in form %}
+                {{f}}
+            {% endfor %}
+            <button type="submit">Сохранить</button>
+        </form>
+        <div id="map" class="item"></div>
+    </div>
+
+    {% for r in reviews %}
+    <div class="review d-flex">
+        <div class="text-info">
+            <p><img src="{{r.user_id.profile_image.url}}" alt="">  <span>{{r.user_id}}</span></p>
+            <h4>{{r.name}}</h4>
+            <p>{{r.comment}}</p>
+        </div>
+        <div class="map" id="map{{r.pk}}"></div>
+    </div>
+    {% endfor %}
+</div>
+<script src="https://api-maps.yandex.ru/2.1/?apikey=ebc410e6-6106-4472-b44f-6137b2eb61e9&lang=ru_RU"></script>
+<script src="{% static 'js/newsline.js' %}"></script>
+{% endblock %}

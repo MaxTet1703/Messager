@@ -11,6 +11,7 @@ from django.contrib.auth import get_user
 from django.views import View
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
 
 from .forms import *
 from .models import *
@@ -73,7 +74,8 @@ class HomePage(LoginRequiredMixin, View):
 
     def post(self, request):
         friend = Users.objects.get(pk=request.POST.get('pk'))
-        new_chat = Chats.objects.create().participants(friend, self.request.user)
+        new_chat = Chats.objects.create()
+        new_chat.participants.add(friend, self.request.user)
         new_chat.save()
         return JsonResponse({'status': 'ok'}, status=200)
 
@@ -102,28 +104,26 @@ class DialogView(MessagesMixin, CompanionMixin, LoginRequiredMixin, DetailView):
                                               Prefetch("messages", queryset=self.get_messages)).get(
                                                         pk=self.kwargs['id'])
 
-class NewslineView(FormView, ListView):
+class NewslineView(LoginRequiredMixin, FormView, ListView):
     template_name = 'newsline.html'
     form_class = PlacesFrom
     model = Places
     context_object_name = "reviews"
 
     def get_queryset(self):
-        return Places.objects.filter(
-            user_id=self.request.user).select_related("user_id").only("pk", "name",
+        return Places.objects.all().select_related("user_id").only("pk", "name",
                                                                      "comment", "user_id",
                                                                     "user_id__profile_image")
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context["use_map"] = True
         return context
 
     def form_valid(self, form: PlacesFrom):
-        new_entry = form.save()
+        new_entry = form.save(commit=False)
         new_entry.user_id = self.request.user
         new_entry.save()
-        return JsonResponse(form.cleaned_data, status=200)
+        return JsonResponse({"mes": "Готово"}, status=200)
 
     def form_invalid(self, form: PlacesFrom):
         return JsonResponse({
@@ -134,7 +134,7 @@ class NewslineView(FormView, ListView):
 def get_reviews(request, format=None):
     queryset = Places.objects.all().only("pk", "longitude", 'latitude')
     serializer = PlacesSerializer(queryset, many=True)
-    return Response(serializer.data)
+    return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 def getting_user(request):
     user = get_user(request)

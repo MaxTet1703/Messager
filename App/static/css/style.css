@@ -5,6 +5,8 @@
 body{
     background: #F0EDE5;
     position: relative;
+    width: 100vw;
+    height: 100vh;
 }
 #MainHeader{
     padding: 0;
@@ -675,4 +677,80 @@ p.full-name{
 .send:hover:after{
     width: 100%;
     height: 100%;
+}
+.newsline-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form-container{
+    margin: 70px;
+}
+#make-mem > *{
+    margin: 10px 0;
+}
+#make-mem .pname{
+    background: none;
+    border: none;
+    border-bottom: 2px solid #C9BB95;
+    width: 100%;
+    color: #C9BB95;
+}
+#make-mem .pname:focus,
+#make-mem .pcomm:focus{ 
+    outline: none;
+}
+#make-mem .pname::placeholder, #make-mem .pcomm::placeholder{
+    color: #C9BB95;
+    margin: 5px 0;
+}
+#make-mem .pcomm{
+    background: none;
+    border: 2px solid #C9BB95;
+    padding: 10px;
+    color: #C9BB95;
+    resize: none;
+    border-radius: 10px;
+}
+#make-mem button{
+    background: #C9BB95;
+    border: 2px solid #C9BB95;
+    padding: 10px;
+    color: white;
+    resize: none;
+    border-radius: 10px;
+}
+#map{
+    width: 450px;
+    height: 100%;
+}
+.item{
+    margin: 0 10px;
+}
+.review{
+    margin: 20px 0;
+}
+.review p,
+.review span,
+.review h4{
+    color: #C9BB95;
+}
+.review span{
+    margin-left: 10px;
+}
+.review .text-info{
+    margin: 0 10px;
+    width: 350px;
+    word-wrap: break-word;
+}
+.review .text-info img{
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+}
+.map{
+    width: 650px;
+    height: 350px;
 }
