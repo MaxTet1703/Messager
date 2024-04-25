@@ -80,6 +80,9 @@ class Places(models.Model):
     longitude = models.FloatField(blank=False, verbose_name="Долгота")
     latitude = models.FloatField(blank=False, verbose_name="Широта")
 
+    class Meta:
+        ordering = ("-pk",)
+
 
 class Chats(models.Model):
     """

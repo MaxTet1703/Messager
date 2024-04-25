@@ -8,4 +8,12 @@ $(function($){
             $(item).addClass('active');
         }
     });
+    $("div.chat-container i").click((event) => {
+        $(event.target.parentElement).addClass("d-none");
+        $(".msg-button").removeClass("d-none");
+    });
+    $(".msg-button").click((event) => {
+        $(event.target).addClass("d-none");
+        $("div.chat-container").removeClass("d-none");
+    })
 });

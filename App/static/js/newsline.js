@@ -2,7 +2,7 @@ $(function($){
     ymaps.ready(function(){
         var map = new ymaps.Map("map", {
             center: [56.0102763820674, 92.85198816311457],
-            zoom: 10,
+            zoom: 15,
             controls: []
         });
         console.log(map.geoObjects);
@@ -29,6 +29,7 @@ $(function($){
             dataType: 'json',
             success: function(response){
                 console.log(response.mes);
+                window.location.reload()
             },
             error: function(xhr, status, error){
                 console.log("Фиаско, братан");
@@ -41,7 +42,7 @@ $(function($){
         Array.from(data).forEach(element => {
             var map = new ymaps.Map(`map${element.pk}`,{
                 center: [element.longitude, element.latitude],
-                zoom: 10,
+                zoom: 15,
                 controls: []
             });
             map.geoObjects.add(new ymaps.Placemark([element.longitude, element.latitude])) 

@@ -754,3 +754,77 @@ p.full-name{
     width: 650px;
     height: 350px;
 }
+
+.chat-container{
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width:250px;
+    height: 400px;
+    border-radius: 15px 15px 5px 5px;
+    padding: 15px;
+    background-color: white;
+
+}
+.chat-container form{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+}
+.chat-container .message-wrapper{
+    height: 90%;
+    width: 100%;
+}
+.chat-container form input{
+    width: 100%;
+    margin: 5px 0;
+    padding: 2px;
+    border: none;
+    border-bottom: 1px solid #C9BB95;
+}
+.chat-container form input:focus{
+    outline: none;
+}
+.chat-container i{
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    color: rgba(0,0,0,.4);
+}
+.chat-container i:hover{
+    color: rgba(0,0,0,.8);
+}
+.msg-button{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #C9BB95;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.msg-button::before{
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255);
+    width: 0;
+    opacity: 0.5;
+    border-radius: 100%;
+    height: 0;
+    transition: .3s;
+}
+.msg-button:hover::before{
+    height: 100%;
+    width: 100%;
+}
+.msg-button i{
+    color: white;
+    font-size: 20px;
+}
