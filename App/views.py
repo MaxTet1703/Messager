@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.db.models.query import Prefetch
+from django.db.models import Count
 from django.views.generic.detail import DetailView
 from django.views.generic import FormView
 from django.views.generic.list import ListView
@@ -9,14 +10,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.cache import cache_page
 from django.contrib.auth import get_user
 from django.views import View
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework import status
 
 from .forms import PlacesFrom, UserLogin, UserCreate
 from .models import Users, Chats, Places, Message
 from .mixins import CompanionMixin, MessagesMixin
-from .serializers import PlacesSerializer
+
 
 
 # Create your views here.
@@ -131,6 +129,17 @@ class NewslineView(LoginRequiredMixin, FormView, ListView):
             "mes": "Заполните данные полностью"
             }, status=400)
 
+
+class ProfilePageView(LoginRequiredMixin, DetailView):
+    template_name = "profile_page.html"
+    pk_url_kwarg = 'id'
+    context_object_name = "user"
+
+    def get_object(self):
+        return Users.objects.filter(pk=self.kwargs.get("user_id")).annotate(message_count=Count("user"),
+                                                                    chats_count=Count("chats"),
+                                                                    posts_count=Count("places"))[0]
+    
 
 def getting_user(request):
     user = get_user(request)

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="statistic d-flex flex-column">
+    <h3 style="text-align: center;">Статистика пользователя</h3>
+    <p>ФИ: {{user}}</p>
+    <p>Количество сообщений: {{user.message_count}}</p>
+    <p>Количетсво друзей: {{user.chats_count}}</p>
+    <p>Количество постов: {{user.posts_count}}</p>
+</div>
+{% endblock %}

@@ -64,6 +64,9 @@ class Users(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+    
+    def get_absolute_url(self):
+        return reverse_lazy('profile', kwargs={"user_id": self.pk})
 
 
 class Places(models.Model):

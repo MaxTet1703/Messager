@@ -836,3 +836,19 @@ p.full-name{
     color: white;
     font-size: 20px;
 }
+.statistic{
+    background: white;
+    width: 600px;
+    height: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+    box-shadow: 5px 5px 15px black;
+    padding: 10px;
+}
+.statistic p{
+    margin: 5px 0;
+    font-size: 20px;
+} 

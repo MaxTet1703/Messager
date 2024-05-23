@@ -26,7 +26,7 @@
                             <li class="item"><a href="{% url 'main' %}">Поиск</a></li>
                             <li class="item"><a href="{% url 'chats' %}">Сообщения</a></li>
                             <li class="item"> <a href="{% url 'newsline' %}">Лента</a></li>
-                            <li class="item"><a>Профиль</a></li>
+                            <li class="item"><a href="{{request.user.get_absolute_url}}">Профиль</a></li>
                             <li class="item"><a>Вопросы</a></li>
                             <li class="item"><a href="{% url 'logout' %}">Выйти</a></li>
                         </ul>
@@ -39,9 +39,9 @@
             </nav>
         </div>
     </header>
+    {% block content %}
+    {% endblock %}
 <body>
-{% block content %}
-{% endblock %}
 {% if user.is_authenticated %}
     <script src="{% static 'js/main.js' %}"></script>
 {% endif %}
