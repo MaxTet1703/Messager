@@ -7,6 +7,7 @@
             <a class="link-to-mes" href="{{c.get_absolute_url}}">
                 <img class="companion-image" src="{{c.participants.all.0.profile_image.url}}">
                 <p class="full-name">{{c.participants.all.0}}</p>
+                <p class="last-mes">{{c.messages.all.0.text}}</p>
             </a>
 
         {%endfor%}

@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .forms import PlacesFrom, UserLogin, UserCreate
-from .models import Users, Chats, Places
+from .models import Users, Chats, Places, Message
 from .mixins import CompanionMixin, MessagesMixin
 from .serializers import PlacesSerializer
 
@@ -52,7 +52,6 @@ class Login(View):
         "sign-up": sign_up
     }
 
-    @cache_page(60)
     def get(self, request):
         if self.request.user.is_authenticated:
             return redirect('main')
@@ -86,8 +85,8 @@ class ChatsView(CompanionMixin, LoginRequiredMixin, View):
 
     def get(self, request):
         chats = Chats.objects.filter(participants__pk__in=(self.request.user.pk,)). \
-            prefetch_related(Prefetch("participants",
-                                      queryset=self.get_companion))
+            prefetch_related(Prefetch("participants", queryset=self.get_companion), 
+                             Prefetch("messages", queryset=Message.objects.order_by("-pk")))
         context = {
             "query": chats
         }

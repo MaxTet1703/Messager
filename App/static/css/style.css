@@ -529,6 +529,14 @@ a.vk-btn{
     display: flex;
     align-items: center;
     padding: 20px;
+    position: relative;
+}
+.link-to-mes .last-mes{
+    position: absolute;
+    top: 60%;
+    left: 25%;
+    font-size: 15px;
+
 }
 img.companion-image{
     width: 90px;

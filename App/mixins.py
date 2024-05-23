@@ -1,6 +1,4 @@
 from .models import Users, Message
-from django.contrib.auth.mixins import LoginRequiredMixin
-import vk_api
 
 
 class CompanionMixin:
