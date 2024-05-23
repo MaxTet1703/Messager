@@ -6,8 +6,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.postgres.indexes import GinIndex
 from django.db import models
 
-from Messager.settings import BASE_DIR
-
 
 # Create your models here.
 class UserManager(BaseUserManager):

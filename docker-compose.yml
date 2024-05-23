@@ -20,6 +20,7 @@ services:
     image: redis
     restart: always
     container_name: redis
+    hostname: redis
     expose:
       -  6379
     ports:

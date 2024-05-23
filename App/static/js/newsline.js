@@ -5,20 +5,15 @@ $(function($){
             zoom: 15,
             controls: []
         });
-        console.log(map.geoObjects);
         map.events.add("click", (e) => {
             map.geoObjects.removeAll();
             map.geoObjects.add(new ymaps.Placemark(e.get("coords")));
             $('input[name="latitude"]').val(e.get("coords")[1]);
             $('input[name="longitude"]').val(e.get("coords")[0]);
         })
-        fetch('http://' + window.location.host + '/map_info/')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                render_maps(data)
-            })
-            .catch(error => console.error(error))
+        if(Array.from($(".review .map")).length != 0){
+            render_maps();
+        }
     });
     $("#make-mem").submit(function(e){
         e.preventDefault();
@@ -38,14 +33,14 @@ $(function($){
 
         });
     });
-    function render_maps(data){
-        Array.from(data).forEach(element => {
-            var map = new ymaps.Map(`map${element.pk}`,{
-                center: [element.longitude, element.latitude],
+    function render_maps(){
+        Array.from(($(".review div.map"))).forEach(element => {
+            var map = new ymaps.Map($(element).attr("id"), {
+                center: [$(element).attr("longitude"), $(element).attr("latitude")],
                 zoom: 15,
                 controls: []
             });
-            map.geoObjects.add(new ymaps.Placemark([element.longitude, element.latitude])) 
+            map.geoObjects.add(new ymaps.Placemark([$(element).attr("longitude"), $(element).attr("latitude")])) 
         });
     }
 });

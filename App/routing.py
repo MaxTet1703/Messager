@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .consumers import *
+from .consumers import SearchConsumer, MessageConsumer
 
 websocket_urlpatterns = [
     path('ws/main', SearchConsumer.as_asgi(), name="wsmain"),

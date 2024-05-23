@@ -5,17 +5,17 @@ from django.db.models.query import Prefetch
 from django.views.generic.detail import DetailView
 from django.views.generic import FormView
 from django.views.generic.list import ListView
-from rest_framework.renderers import JSONRenderer
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.cache import cache_page
 from django.contrib.auth import get_user
 from django.views import View
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-from .forms import *
-from .models import *
-from .mixins import CompanionMixin, MessagesMixin, GetDataFromVKAPIMixin
+from .forms import PlacesFrom, UserLogin, UserCreate
+from .models import Users, Chats, Places
+from .mixins import CompanionMixin, MessagesMixin
 from .serializers import PlacesSerializer
 
 
@@ -52,6 +52,7 @@ class Login(View):
         "sign-up": sign_up
     }
 
+    @cache_page(60)
     def get(self, request):
         if self.request.user.is_authenticated:
             return redirect('main')
@@ -104,6 +105,7 @@ class DialogView(MessagesMixin, CompanionMixin, LoginRequiredMixin, DetailView):
                                               Prefetch("messages", queryset=self.get_messages)).get(
                                                         pk=self.kwargs['id'])
 
+
 class NewslineView(LoginRequiredMixin, FormView, ListView):
     template_name = 'newsline.html'
     form_class = PlacesFrom
@@ -111,7 +113,7 @@ class NewslineView(LoginRequiredMixin, FormView, ListView):
     context_object_name = "reviews"
 
     def get_queryset(self):
-        return Places.objects.all().select_related("user_id").only("pk", "name",
+        return Places.objects.filter(user_id=self.request.user).select_related("user_id").only("pk", "name",
                                                                      "comment", "user_id",
                                                                     "user_id__profile_image")
 
@@ -130,11 +132,6 @@ class NewslineView(LoginRequiredMixin, FormView, ListView):
             "mes": "Заполните данные полностью"
             }, status=400)
 
-@api_view(["GET"])
-def get_reviews(request, format=None):
-    queryset = Places.objects.all().only("pk", "longitude", 'latitude')
-    serializer = PlacesSerializer(queryset, many=True)
-    return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 def getting_user(request):
     user = get_user(request)
@@ -142,6 +139,7 @@ def getting_user(request):
     return JsonResponse({"id": user.id})
 
 
+@cache_page(60*20)
 def about_us(request):
     return render(request, "about_us.html", {"is_about": True})
 

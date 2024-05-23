@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from phonenumber_field.formfields import PhoneNumberField as PNF
+from django.core.exceptions import ValidationError
 
-from .models import *
+from .models import Users, Places
 
 
 class UserLogin(forms.Form):

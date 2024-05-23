@@ -1,9 +1,9 @@
 from tempfile import NamedTemporaryFile
 from urllib.request import urlopen
 
-from PIL import Image
 from django.core.files import File
 import vk_api
+
 
 def check(strategy, details, backend, user=None, *args, **kwargs):
     if user:

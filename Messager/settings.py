@@ -79,27 +79,18 @@ ASGI_APPLICATION = 'Messager.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-#
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'postgres',
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres',
-#         'HOST': 'pgdb',
-#         'PORT': '5432'
-#     }
-# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'NAME': os.getenv("DB_NAME", 'postgres'),
+        'USER': os.getenv("DB_USER", 'postgres'),
+        'PASSWORD': os.getenv("DB_PASSWORD", 'postgres'),
+        'HOST': os.getenv("DB_HOST", 'localhost'),
+        'PORT': os.getenv("DB_PORT", 5432)
     }
 }
+
 
 
 # Password validation
@@ -146,9 +137,19 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("localhost", 6379)],
+            "hosts": [(os.getenv("CHANNELS_HOST", "localhost"),
+                      os.getenv("CHANNELS_PORT", 6379))],
         },
     },
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.getenv("REDIS_HOST", "redis://localhost:6379"),
+        "KEY_PREFIX": "imdb",
+        "TIMEOUT": 60*15   
+    }
 }
 
 REST_FRAMEWORK = {
